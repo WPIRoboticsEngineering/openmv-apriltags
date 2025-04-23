@@ -50,8 +50,8 @@ def checksum(data):
     return checksum & 0xFFFF
 
 def to_object_block_format(tag):
-    angle = int((tag.rotation() * 180) / math.pi)
-    temp = struct.pack("<hhhhhh", tag.id(), tag.cx(), tag.cy(), tag.w(), tag.h(), angle)
+    angle = int((tag.rotation * 180) / math.pi)
+    temp = struct.pack("<hhhhhh", tag.id, tag.cx, tag.cy, tag.w, tag.h, angle)
     return struct.pack("<hh12s", 0xAA56, checksum(temp), temp)
 
 # Main Loop
@@ -74,8 +74,8 @@ while(True):
         for tag in sorted(tags, key = lambda x: x.h * x.w, reverse = True)[0:max_blocks]:
 
             dat_buf = to_object_block_format(tag)
-            img.draw_rectangle(tag.rect())
-            img.draw_cross(tag.cx(), tag.cy())
+            img.draw_rectangle(tag.rect)
+            img.draw_cross(tag.cx, tag.cy)
 
             # dat_buf += struct.pack("<h", 0x0000)
             # write(dat_buf) # write all data in one packet...
