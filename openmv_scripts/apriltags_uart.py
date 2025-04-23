@@ -36,8 +36,8 @@ def checksum(data):
     return checksum & 0xFFFF
 
 def to_object_block_format(tag):
-    angle = int((tag.rotation() * 180) / math.pi)
-    temp = struct.pack("<hhhhhh", tag.id(), tag.cx(), tag.cy(), tag.w(), tag.h(), angle)
+    angle = int((tag.rotation * 180) / math.pi)
+    temp = struct.pack("<hhhhhh", tag.id, tag.cx, tag.cy, tag.w, tag.h, angle)
     return struct.pack("<bbh12sb", 0xFF, 0x55, checksum(temp), temp, 0xAA)
 
 
@@ -48,11 +48,11 @@ while(True):
 
     # Now print out the found tags
     for tag in tag_list:
-        img.draw_rectangle(tag.rect(), color=(255, 0, 0))
-        img.draw_cross(tag.cx(), tag.cy())
-        for c in tag.corners():
+        img.draw_rectangle(tag.rect, color=(255, 0, 0))
+        img.draw_cross(tag.cx, tag.cy)
+        for c in tag.corners:
             img.draw_circle(c[0], c[1], 5)
-        print("Tag:", tag.id(), tag.cx(), tag.cy(), tag.rotation())
+        print("Tag:", tag.id, tag.cx, tag.cy, tag.rotation)
 
         data_buf = to_object_block_format(tag)
         uart.write(data_buf)
